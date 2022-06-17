@@ -1,0 +1,62 @@
+[package]
+name = "embedded-hal-fuzz-fuzz"
+version = "0.0.0"
+authors = ["Automatically generated"]
+publish = false
+edition = "2018"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+embedded-hal = {version="0.2.7", features=["unproven"]}
+
+[dependencies.embedded-hal-fuzz]
+path = ".."
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "i2c_dodgy"
+path = "fuzz_targets/i2c_dodgy.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "i2c_good"
+path = "fuzz_targets/i2c_good.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "digital_dodgy"
+path = "fuzz_targets/digital_dodgy.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "digital_good"
+path = "fuzz_targets/digital_good.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "spi_good"
+path = "fuzz_targets/spi_good.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "spi_dodgy"
+path = "fuzz_targets/spi_dodgy.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "multiple_io"
+path = "fuzz_targets/multiple_io.rs"
+test = false
+doc = false
