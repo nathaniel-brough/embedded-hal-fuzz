@@ -1,7 +1,7 @@
 use crate::error::FuzzedError;
 use crate::shared_data::FuzzData;
 use core::marker::PhantomData;
-use embedded_hal::blocking::i2c::{AddressMode, Read, WriteRead};
+use embedded_hal::blocking::i2c::{AddressMode, Read, Write, WriteRead};
 
 /// A fuzzed backend for the I2C read trait.
 pub struct I2cFuzz<'a, E: FuzzedError<'a>> {
@@ -45,5 +45,23 @@ impl<'a, A: AddressMode, E: FuzzedError<'a>> WriteRead<A> for I2cFuzz<'a, E> {
         read_buffer: &mut [u8],
     ) -> Result<(), Self::Error> {
         self.read(address, read_buffer)
+    }
+}
+
+impl<'a, A: AddressMode, E: FuzzedError<'a>> Write<A> for I2cFuzz<'a, E> {
+    type Error = E;
+    fn write(
+        &mut self,
+        address: A,
+        _ignore_write_buffer: &[u8],
+    ) -> Result<(), Self::Error> {
+        let mut data = match self.data.iter.lock() {
+            Ok(data) => data,
+            Err(_) => return Err(Default::default()),
+        };
+        if let Some(err) = E::new_err(&mut *data) {
+            return Err(err);
+        }
+        Ok(())
     }
 }
