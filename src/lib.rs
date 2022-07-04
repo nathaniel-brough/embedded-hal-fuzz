@@ -117,6 +117,7 @@
 //! For some examples of how to use the fuzzer, checkout the targets in the
 //! 'fuzz/fuzz_targets' directory of this repository.
 
+pub mod adc;
 pub mod digital;
 pub mod error;
 pub mod i2c;

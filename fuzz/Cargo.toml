@@ -60,3 +60,15 @@ name = "multiple_io"
 path = "fuzz_targets/multiple_io.rs"
 test = false
 doc = false
+
+[[bin]]
+name = "adc_good"
+path = "fuzz_targets/adc_good.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "adc_dodgy"
+path = "fuzz_targets/adc_dodgy.rs"
+test = false
+doc = false
