@@ -41,7 +41,7 @@ impl<'a, E: FuzzedError<'a>> FullDuplex<u8> for SpiFuzz<'a, E> {
         // TODO: Explore the possibility of having a fuzzed error here.
         // it's possible that have a WouldBlock may result in a forever loop in
         // the fuzzer.
-        data.next().map(|x| *x).ok_or(nb::Error::WouldBlock)
+        data.next().copied().ok_or(nb::Error::WouldBlock)
     }
 
     fn send(&mut self, _: u8) -> Result<(), Self::Error> {

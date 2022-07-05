@@ -44,7 +44,7 @@ where
                 .next()
                 .copied()
                 .map(Word::from)
-                .ok_or(nb::Error::Other(Default::default()))?;
+                .ok_or_else(|| nb::Error::Other(Default::default()))?;
             value = value | (data << (byte * 8));
         }
         Ok(value)
@@ -56,7 +56,5 @@ where
 pub struct DummyPin {}
 impl Channel<()> for DummyPin {
     type ID = ();
-    fn channel() -> Self::ID {
-        ()
-    }
+    fn channel() -> Self::ID {}
 }
