@@ -1,7 +1,7 @@
 use crate::error::FuzzedError;
 use crate::shared_data::FuzzData;
 use core::marker::PhantomData;
-use embedded_hal::serial::{Read,Write};
+use embedded_hal::serial::{Read, Write};
 use nb::Result;
 
 pub struct SerialFuzz<'a, E> {
@@ -9,7 +9,10 @@ pub struct SerialFuzz<'a, E> {
     e_: PhantomData<E>,
 }
 
-impl<'a, E: FuzzedError<'a>> embedded_hal::blocking::serial::write::Default<u8> for SerialFuzz<'a, E> {}
+impl<'a, E: FuzzedError<'a>> embedded_hal::blocking::serial::write::Default<u8>
+    for SerialFuzz<'a, E>
+{
+}
 
 impl<'a, E: FuzzedError<'a>> SerialFuzz<'a, E> {
     pub fn new(data: FuzzData<'a>) -> Self {
@@ -52,7 +55,6 @@ impl<'a, E: FuzzedError<'a>> Read<u8> for SerialFuzz<'a, E> {
         data.next().map(|x| *x).ok_or(nb::Error::WouldBlock)
     }
 }
-
 
 impl<'a, E: FuzzedError<'a>> Write<u8> for SerialFuzz<'a, E> {
     type Error = E;

@@ -121,6 +121,6 @@ pub mod adc;
 pub mod digital;
 pub mod error;
 pub mod i2c;
+pub mod serial;
 pub mod shared_data;
 pub mod spi;
-pub mod serial;

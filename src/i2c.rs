@@ -50,11 +50,7 @@ impl<'a, A: AddressMode, E: FuzzedError<'a>> WriteRead<A> for I2cFuzz<'a, E> {
 
 impl<'a, A: AddressMode, E: FuzzedError<'a>> Write<A> for I2cFuzz<'a, E> {
     type Error = E;
-    fn write(
-        &mut self,
-        address: A,
-        _ignore_write_buffer: &[u8],
-    ) -> Result<(), Self::Error> {
+    fn write(&mut self, address: A, _ignore_write_buffer: &[u8]) -> Result<(), Self::Error> {
         let mut data = match self.data.iter.lock() {
             Ok(data) => data,
             Err(_) => return Err(Default::default()),
