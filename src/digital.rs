@@ -26,7 +26,8 @@ impl<'a, E: FuzzedError<'a>> InputPinFuzz<'a, E> {
         if let Some(err) = E::new_err(&mut *data) {
             return Err(err);
         }
-        match data.next() {
+        let byte = data.next();
+        match byte {
             Some(x) if *x > 128 => Ok(false),
             _ => Ok(true),
         }
