@@ -1,5 +1,5 @@
-//! This crate is specifically designed for fuzzing device drivers. It provides
-//! a best guess for how to fuzz a device driver.
+//! This crate is specifically designed for fuzzing device drivers or full apps.
+//! It provides a best guess for how to fuzz device-drivers/apps.
 //!
 //! # Getting started
 //! If you are not familiar with fuzzing in rust then it is recommended that you
@@ -104,6 +104,37 @@
 //! Finally we can run the fuzz test with cargo-fuzz.
 //! ```bash
 //! cargo fuzz run my_target
+//! ```
+//!
+//! ## Fuzzing complete apps
+//! To fuzz a complete app you will need to structure your app similar to how
+//! you would structure a driver. e.g.
+//! ```rust, no_run
+//! #![no_main]
+//! use embedded_hal::blocking::i2c::WriteRead;
+//! struct MyApp<T: WriteRead> {
+//!     i2c: T,
+//! }
+//! impl<T: WriteRead> MyApp<T> {
+//!     fn new(i2c: T) -> Self {
+//!         Self { i2c }
+//!     }
+//!     // ...
+//! }
+//! use embedded_hal_fuzz as hal_fuzz;
+//! use libfuzzer_sys::fuzz_target;
+//!
+//!
+//! fuzz_target!(|data: &[u8]| {
+//!     // Ignore empty inputs.
+//!     if data.len() > 0 {
+//!         use hal_fuzz::shared_data::FuzzData;
+//!         let data = FuzzData::new(data);
+//!         let i2c: hal_fuzz::i2c::I2cFuzz<'_, ()> = hal_fuzz::i2c::I2cFuzz::new(data);
+//!         let mut driver = MyApp::new(i2c);
+//!         // ...
+//!     }
+//! });
 //! ```
 //!
 //! ## Custom errors
