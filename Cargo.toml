@@ -17,3 +17,6 @@ nb = "1.0.0"
 num-traits = "0.2"
 num-derive = "0.3"
 libfuzzer-sys = "0.4"
+
+[package.metadata.commits]
+defaults = true
