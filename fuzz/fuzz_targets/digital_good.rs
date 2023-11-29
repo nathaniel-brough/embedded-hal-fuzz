@@ -1,6 +1,6 @@
 #![no_main]
 /// This fuzz test should pass.
-use embedded_hal::digital::v2::InputPin;
+use embedded_hal::digital::InputPin;
 use embedded_hal_fuzz as hal_fuzz;
 use libfuzzer_sys::fuzz_target;
 
@@ -23,16 +23,7 @@ impl<T: InputPin> Driver<T> {
     }
 }
 
-type Error = ();
-
-fuzz_target!(|data: &[u8]| {
-    use hal_fuzz::shared_data::FuzzData;
-    // Ignore empty inputs.
-    if data.len() > 0 {
-        let data = FuzzData::new(data);
-        let pin: hal_fuzz::digital::InputPinFuzz<'_, Error> =
-            hal_fuzz::digital::InputPinFuzz::new(data);
-        let mut driver = Driver::new(pin);
-        let _ = driver.get_pinstate();
-    }
+fuzz_target!(|pin: hal_fuzz::digital::ArbitraryInputPin| {
+    let mut driver = Driver::new(pin);
+    let _ = driver.get_pinstate();
 });

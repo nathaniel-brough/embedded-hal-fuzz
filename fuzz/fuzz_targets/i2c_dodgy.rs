@@ -1,14 +1,14 @@
 #![no_main]
 /// This fuzz test should fail.
-use embedded_hal::blocking::i2c::{Read, WriteRead};
+use embedded_hal::i2c::{I2c, SevenBitAddress};
 use embedded_hal_fuzz as hal_fuzz;
 use libfuzzer_sys::fuzz_target;
 
-struct DodgyDriver<T: Read + WriteRead> {
+struct DodgyDriver<T> {
     i2c: T,
 }
 
-impl<T: Read + WriteRead> DodgyDriver<T> {
+impl<T: I2c> DodgyDriver<T> {
     fn new(i2c: T) -> Self {
         Self { i2c }
     }
@@ -26,15 +26,8 @@ impl<T: Read + WriteRead> DodgyDriver<T> {
     }
 }
 
-type I2cError = ();
-
-fuzz_target!(|data: &[u8]| {
+fuzz_target!(|i2c: hal_fuzz::i2c::ArbitraryI2c<SevenBitAddress>| {
     // Ignore empty inputs.
-    if data.len() > 0 {
-        use hal_fuzz::shared_data::FuzzData;
-        let data = FuzzData::new(data);
-        let i2c: hal_fuzz::i2c::I2cFuzz<'_, I2cError> = hal_fuzz::i2c::I2cFuzz::new(data);
-        let mut driver = DodgyDriver::new(i2c);
-        let _ = driver.get_dodgy_scaled_value();
-    }
+    let mut driver = DodgyDriver::new(i2c);
+    let _ = driver.get_dodgy_scaled_value();
 });
