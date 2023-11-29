@@ -1,7 +1,6 @@
 #![no_main]
-
 /// This fuzz test should fail.
-use embedded_hal::digital::v2::InputPin;
+use embedded_hal::digital::InputPin;
 use embedded_hal_fuzz as hal_fuzz;
 use libfuzzer_sys::fuzz_target;
 
@@ -24,16 +23,7 @@ impl<T: InputPin> DodgyDriver<T> {
     }
 }
 
-type Error = ();
-
-fuzz_target!(|data: &[u8]| {
-    // Ignore empty inputs.
-    use hal_fuzz::shared_data::FuzzData;
-    if data.len() > 0 {
-        let data = FuzzData::new(data);
-        let pin: hal_fuzz::digital::InputPinFuzz<'_, Error> =
-            hal_fuzz::digital::InputPinFuzz::new(data);
-        let mut driver = DodgyDriver::new(pin);
-        let _ = driver.get_dodgy_pin();
-    }
+fuzz_target!(|pin: hal_fuzz::digital::ArbitraryInputPin| {
+    let mut driver = DodgyDriver::new(pin);
+    let _ = driver.get_dodgy_pin();
 });

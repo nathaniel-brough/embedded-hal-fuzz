@@ -7,18 +7,14 @@
 
 
 # embedded-hal-fuzz
-A fuzzing library for rust hardware drivers. Checkout the [docs](https://docs.rs/embedded-hal-fuzz/0.1.0/embedded_hal_fuzz/) for more details.
+A fuzzing library for rust hardware drivers. Checkout the [docs](https://docs.rs/embedded-hal-fuzz/1.0.0-rc.1/embedded_hal_fuzz/) for more details.
 
 ## Feature status
 
 - [x] I²C (Read, WriteRead)
 - [x] SPI (FullDuplex, Write, WriteIter, Transactional)
-- [ ] No-op delay
-- [ ] Actual delay
+- [x] No-op delay
 - [x] Serial
-- [ ] RNG (Probably won't implement)
 - [x] I/O pins (InputPin, OutputPin)
-- [ ] ADC
-- [ ] Timers
-- [ ] ...
+- [x] PWM
 
