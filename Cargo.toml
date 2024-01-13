@@ -1,6 +1,6 @@
 [package]
 name = "embedded-hal-fuzz"
-version = "1.0.0-rc.1"
+version = "1.0.0"
 edition = "2021"
 authors = ["Nathaniel Brough"]
 repository = "https://github.com/silvergasp/embedded-hal-fuzz"
@@ -11,7 +11,7 @@ license = "MIT"
 
 [dependencies]
 arbitrary = { version = "1.3.2", features = ["derive"] }
-embedded-hal = {version = "1.0.0-rc.1"}
+embedded-hal = {version = "1.0.0"}
 nb = "1.0.0"
 thiserror = "1.0.50"
 

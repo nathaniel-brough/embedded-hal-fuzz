@@ -56,7 +56,7 @@ impl ErrorType for ArbitraryPwm {
 }
 
 impl SetDutyCycle for ArbitraryPwm {
-    fn get_max_duty_cycle(&self) -> u16 {
+    fn max_duty_cycle(&self) -> u16 {
         self.max_duty_cycle
     }
 
