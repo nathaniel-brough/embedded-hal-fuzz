@@ -50,7 +50,7 @@ impl ErrorType for ArbitraryInputPin {
 }
 
 impl InputPin for ArbitraryInputPin {
-    fn is_high(&self) -> Result<bool, Self::Error> {
+    fn is_high(&mut self) -> Result<bool, Self::Error> {
         match self.pin_states.try_borrow_mut() {
             Ok(mut pin_states) => match pin_states.pop() {
                 Some(result) => result,
@@ -59,7 +59,7 @@ impl InputPin for ArbitraryInputPin {
             Err(_) => Err(Error),
         }
     }
-    fn is_low(&self) -> Result<bool, Self::Error> {
+    fn is_low(&mut self) -> Result<bool, Self::Error> {
         self.is_high().map(|x| !x)
     }
 }
@@ -102,14 +102,14 @@ impl OutputPin for ArbitraryOutputPin {
 }
 
 impl StatefulOutputPin for ArbitraryOutputPin {
-    fn is_set_high(&self) -> Result<bool, Self::Error> {
+    fn is_set_high(&mut self) -> Result<bool, Self::Error> {
         match self.maybe_error.try_borrow_mut().map_err(|_| Error)?.pop() {
             Some(Some(error)) => Err(error),
             _ => Ok(self.state == PinState::High),
         }
     }
 
-    fn is_set_low(&self) -> Result<bool, Self::Error> {
+    fn is_set_low(&mut self) -> Result<bool, Self::Error> {
         match self.maybe_error.try_borrow_mut().map_err(|_| Error)?.pop() {
             Some(Some(error)) => Err(error),
             _ => Ok(self.state == PinState::Low),
