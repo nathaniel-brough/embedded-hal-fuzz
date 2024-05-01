@@ -9,7 +9,7 @@ edition = "2018"
 cargo-fuzz = true
 
 [dependencies]
-libfuzzer-sys = "0.4"
+libfuzzer-sys = "0.4.7"
 embedded-hal = {version = "1.0.0-rc.1"}
 
 [dependencies.embedded-hal-fuzz]
