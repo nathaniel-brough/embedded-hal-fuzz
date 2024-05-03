@@ -16,7 +16,7 @@ nb = "1.1.0"
 thiserror = "1.0.57"
 
 [dev-dependencies]
-num-traits = "0.2.18"
+num-traits = "0.2.19"
 num-derive = "0.4"
 libfuzzer-sys = "0.4.7"
 
